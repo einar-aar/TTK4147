@@ -1,0 +1,44 @@
+
+// Define dynamic array
+typedef struct {
+	
+	size_t size;
+	size_t cap;
+	int* data;
+
+} dynamic_arr;
+
+
+// Reserve capacity
+int array_reserve(dynamic_arr* a, size_t new_cap) {
+
+	if (new_cap <= a->cap) return 0;
+
+	int* new_data = malloc(new_cap * sizeof(int));
+	if (!new_data) return -1;
+
+	for (int i = 0; i < a->size; ++i) {
+	new_data[i] = a->data[i];
+	}
+
+	free(a->data);
+	a->data = new_data;
+	a->cap = new_cap;
+
+	return 0; //Success
+}
+
+
+// Add new element
+int array_insert_back(dynamic_arr* arr, int val) {
+
+	if (arr->size == arr->cap) {
+
+		arr->size == 0 ? array_reserve(arr, 8) :
+				array_reserve(arr, arr->size * 2);
+	}
+
+	arr->data[arr->size++] = val;
+
+	return 0; //Success
+}
