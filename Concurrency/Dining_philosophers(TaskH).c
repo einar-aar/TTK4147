@@ -78,7 +78,7 @@ int main() {
     // Set same clock in mutex as clock used for fork_deadline
     pthread_mutexattr_t attr;
     pthread_mutexattr_init(&attr);
-    pthread_mutexattr_setclock(&attr, CLOCK_MONOTONIC);
+    // pthread_mutexattr_setclock(&attr, CLOCK_MONOTONIC);
 
     // Init mutexes
     pthread_mutex_init(&fork1, &attr);
