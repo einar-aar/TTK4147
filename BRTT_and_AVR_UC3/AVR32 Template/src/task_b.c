@@ -44,10 +44,10 @@ int main (void){
     init();
     
     while(1){
-        gpio_toggle_pin(LED0_GPIO);
 
-        printf("tick\n");
+        if (gpio_get_pin_value(TEST_A) == 0) gpio_clr_gpio_pin(RESPONSE_A);
+        if (gpio_get_pin_value(TEST_B) == 0) gpio_clr_gpio_pin(RESPONSE_B);
+        if (gpio_get_pin_value(TEST_C) == 0) gpio_clr_gpio_pin(RESPONSE_C);
         
-        busy_delay_ms(500);
     }
 }
