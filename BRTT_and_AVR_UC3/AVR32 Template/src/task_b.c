@@ -45,9 +45,20 @@ int main (void){
     
     while(1){
 
-        if (gpio_get_pin_value(TEST_A) == 0) gpio_clr_gpio_pin(RESPONSE_A);
-        if (gpio_get_pin_value(TEST_B) == 0) gpio_clr_gpio_pin(RESPONSE_B);
-        if (gpio_get_pin_value(TEST_C) == 0) gpio_clr_gpio_pin(RESPONSE_C);
+        while (gpio_get_pin_value(TEST_A) != 0);
+        gpio_clr_gpio_pin(RESPONSE_A);
+        while (gpio_get_pin_value(TEST_A) == 0);
+        gpio_set_gpio_pin(RESPONSE_A);
+
+        while (gpio_get_pin_value(TEST_B) != 0);
+        gpio_clr_gpio_pin(RESPONSE_B);
+        while (gpio_get_pin_value(TEST_B) == 0);
+        gpio_set_gpio_pin(RESPONSE_B);
+
+        while (gpio_get_pin_value(TEST_C) != 0);
+        gpio_clr_gpio_pin(RESPONSE_C);
+        while (gpio_get_pin_value(TEST_C) == 0);
+        gpio_set_gpio_pin(RESPONSE_C);
         
     }
 }

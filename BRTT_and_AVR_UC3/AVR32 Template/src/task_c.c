@@ -69,9 +69,9 @@ int main (void){
     init();
 
     // Enable interrupt on pins A, B and C
-    gpio_enable_pin_interrupt(TEST_A);
-    gpio_enable_pin_interrupt(TEST_B);
-    gpio_enable_pin_interrupt(TEST_C);
+    gpio_enable_pin_interrupt(TEST_A, GPIO_FALLING_EDGE);
+    gpio_enable_pin_interrupt(TEST_B, GPIO_FALLING_EDGE);
+    gpio_enable_pin_interrupt(TEST_C, GPIO_FALLING_EDGE);
 
     cpu_irq_enable();
     

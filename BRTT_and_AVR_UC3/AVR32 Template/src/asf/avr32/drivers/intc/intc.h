@@ -1,48 +1,37 @@
-/*This file is prepared for Doxygen automatic documentation generation.*/
-/*! \file *********************************************************************
+/**
+ * \file
  *
- * \brief INTC driver for AVR32 UC3.
+ * \brief INTC software driver API for AVR UC3 devices.
  *
- * AVR32 Interrupt Controller driver module.
+ * Copyright (c) 2009-2018 Microchip Technology Inc. and its subsidiaries.
  *
- * - Compiler:           IAR EWAVR32 and GNU GCC for AVR32
- * - Supported devices:  All AVR32 devices with an INTC module can be used.
- * - AppNote:
+ * \asf_license_start
  *
- * \author               Atmel Corporation: http://www.atmel.com \n
- *                       Support and FAQ: http://support.atmel.no/
+ * \page License
  *
- ******************************************************************************/
-
-/* Copyright (c) 2009 Atmel Corporation. All rights reserved.
+ * Subject to your compliance with these terms, you may use Microchip
+ * software and any derivatives exclusively with Microchip products.
+ * It is your responsibility to comply with third party license terms applicable
+ * to your use of third party software (including open source software) that
+ * may accompany Microchip software.
  *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
+ * THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES,
+ * WHETHER EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE,
+ * INCLUDING ANY IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY,
+ * AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT WILL MICROCHIP BE
+ * LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE, INCIDENTAL OR CONSEQUENTIAL
+ * LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND WHATSOEVER RELATED TO THE
+ * SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS BEEN ADVISED OF THE
+ * POSSIBILITY OR THE DAMAGES ARE FORESEEABLE.  TO THE FULLEST EXTENT
+ * ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN ANY WAY
+ * RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
+ * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
  *
- * 1. Redistributions of source code must retain the above copyright notice, this
- * list of conditions and the following disclaimer.
+ * \asf_license_stop
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution.
- *
- * 3. The name of Atmel may not be used to endorse or promote products derived
- * from this software without specific prior written permission.
- *
- * 4. This software may only be redistributed and used in connection with an Atmel
- * AVR product.
- *
- * THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR IMPLIED
- * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
- * EXPRESSLY AND SPECIFICALLY DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
- *
+ */
+/*
+ * Support and FAQ: visit <a href="https://www.microchip.com/support/">Microchip Support</a>
  */
 
 #ifndef _INTC_H_
@@ -50,41 +39,39 @@
 
 #include "compiler.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/**
+ * \defgroup intc_group INTC Software Driver API for AVR UC3
+ *
+ * This is a software module to register interrupt handlers at any specified
+ * interrupt level to any interrupt line managed by the INTC module in AVR UC3
+ * devices.
+ * @{
+ */
 
 //! Maximal number of interrupt request lines per group.
-#define AVR32_INTC_MAX_NUM_IRQS_PER_GRP             32
+#define AVR32_INTC_MAX_NUM_IRQS_PER_GRP      32
 
 //! Number of interrupt priority levels.
-#define AVR32_INTC_NUM_INT_LEVELS                   (1 << AVR32_INTC_IPR_INTLEVEL_SIZE)
+#define AVR32_INTC_NUM_INT_LEVELS            (1 << AVR32_INTC_IPR_INTLEVEL_SIZE)
 
 
-#ifdef __AVR32_ABI_COMPILER__ // Automatically defined when compiling for AVR32, not when assembling.
+#ifdef __AVR32_ABI_COMPILER__
+// (Automatically defined when compiling for AVR UC3, not when assembling).
 
-/*! \brief Initializes the hardware interrupt controller driver.
- *
- * \note Taken and adapted from Newlib.
- */
 extern void INTC_init_interrupts(void);
-
-/*! \brief Registers an interrupt handler.
- *
- * \param handler   Interrupt handler to register.
- * \param irq       IRQ of the interrupt handler to register.
- * \param int_level Interrupt priority level to assign to the group of this IRQ.
- *
- * \warning The interrupt handler must manage the `rete' instruction, what can
- *          be done thanks to pure assembly, inline assembly or the
- *          `__attribute__((__interrupt__))' C function attribute.
- *
- * \warning If several interrupt handlers of a same group are registered with
- *          different priority levels, only the latest priority level set will
- *          be effective.
- *
- * \note Taken and adapted from Newlib.
- */
-extern void INTC_register_interrupt(__int_handler handler, unsigned int irq, unsigned int int_level);
+extern void INTC_register_interrupt(__int_handler handler, uint32_t irq,
+		uint32_t int_level);
 
 #endif  // __AVR32_ABI_COMPILER__
 
+//! @}
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif  // _INTC_H_
