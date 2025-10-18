@@ -27,10 +27,27 @@ void init(){
     sysclk_init();
     board_init();
     busy_delay_init(BOARD_OSC0_HZ);
+
+    gpio_configure_pin(TEST_A, GPIO_DIR_INPUT);
+    gpio_enable_pin_pull_up(TEST_A);
+    gpio_configure_pin(TEST_B, GPIO_DIR_INPUT);
+    gpio_enable_pin_pull_up(TEST_B);
+    gpio_configure_pin(TEST_C, GPIO_DIR_INPUT);
+    gpio_enable_pin_pull_up(TEST_C);
+    
+    gpio_configure_pin(RESPONSE_A, GPIO_DIR_OUTPUT | GPIO_INIT_HIGH);
+    gpio_configure_pin(RESPONSE_B, GPIO_DIR_OUTPUT | GPIO_INIT_HIGH);
+    gpio_configure_pin(RESPONSE_C, GPIO_DIR_OUTPUT | GPIO_INIT_HIGH);
     
     cpu_irq_disable();
     INTC_init_interrupts();
     INTC_register_interrupt(&interrupt_J3, AVR32_GPIO_IRQ_3, AVR32_INTC_INT1);
+
+    // Enable interrupt on pins A, B and C
+    gpio_enable_pin_interrupt(TEST_A, GPIO_FALLING_EDGE);
+    gpio_enable_pin_interrupt(TEST_B, GPIO_FALLING_EDGE);
+    gpio_enable_pin_interrupt(TEST_C, GPIO_FALLING_EDGE);
+    
     cpu_irq_enable();
     
     stdio_usb_init(&CONFIG_USART_IF);
@@ -69,19 +86,12 @@ int main (void){
 
     init();
 
-    // Enable interrupt on pins A, B and C
-    gpio_enable_pin_interrupt(TEST_A, GPIO_FALLING_EDGE);
-    gpio_enable_pin_interrupt(TEST_B, GPIO_FALLING_EDGE);
-    gpio_enable_pin_interrupt(TEST_C, GPIO_FALLING_EDGE);
-
-    cpu_irq_enable();
-    
     while(1) {
         
         if (flag_a) {
 
             gpio_clr_gpio_pin(RESPONSE_A);
-            while (gpio_get_pin_value(TEST_A) != 0);
+            while (gpio_get_pin_value(TEST_A) == 0);
             gpio_set_gpio_pin(RESPONSE_A);
             flag_a = 0;
         }
@@ -89,7 +99,7 @@ int main (void){
         if (flag_b) {
 
             gpio_clr_gpio_pin(RESPONSE_B);
-            while (gpio_get_pin_value(TEST_B) != 0);
+            while (gpio_get_pin_value(TEST_B) == 0);
             gpio_set_gpio_pin(RESPONSE_B);
             flag_b = 0;
         }
@@ -97,7 +107,7 @@ int main (void){
         if (flag_c) {
 
             gpio_clr_gpio_pin(RESPONSE_C);
-            while (gpio_get_pin_value(TEST_C) != 0);
+            while (gpio_get_pin_value(TEST_C) == 0);
             gpio_set_gpio_pin(RESPONSE_C);
             flag_c = 0;
         }
