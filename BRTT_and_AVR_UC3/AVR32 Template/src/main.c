@@ -1,40 +1,112 @@
-/**
- * \file
- *
- * \brief Empty user application template
- *
- */
-
-/**
- * \mainpage User Application template doxygen documentation
- *
- * \par Empty user application template
- *
- * Bare minimum empty user application template
- *
- * \par Content
- *
- * -# Include the ASF header files (through asf.h)
- * -# "Insert system clock initialization code here" comment
- * -# Minimal main function that starts with a call to board_init()
- * -# "Insert application code here" comment
- *
- */
-
-/*
- * Include header files for all drivers that have been imported from
- * Atmel Software Framework (ASF).
- */
-/*
- * Support and FAQ: visit <a href="https://www.microchip.com/support/">Microchip Support</a>
- */
 #include <asf.h>
+#include <board.h>
+#include <gpio.h>
+#include <sysclk.h>
+#include "busy_delay.h"
 
-int main (void)
-{
-	/* Insert system clock initialization code here (sysclk_init()). */
+#define CONFIG_USART_IF (AVR32_USART2)
 
-	board_init();
+// defines for BRTT interface
+#define TEST_A      AVR32_PIN_PA31
+#define RESPONSE_A  AVR32_PIN_PA30
+#define TEST_B      AVR32_PIN_PA29
+#define RESPONSE_B  AVR32_PIN_PA28
+#define TEST_C      AVR32_PIN_PA27
+#define RESPONSE_C  AVR32_PIN_PB00
 
-	/* Insert application code here, after the board has been initialized. */
+
+// Interrupt flags
+volatile int flag_a = 0;
+volatile int flag_b = 0;
+volatile int flag_c = 0;
+
+
+__attribute__((__interrupt__)) static void interrupt_J3(void);
+
+void init(){
+
+    sysclk_init();
+    board_init();
+    busy_delay_init(BOARD_OSC0_HZ);
+
+	gpio_clear_pin_interrupt_flag(RESPONSE_A);
+	gpio_clear_pin_interrupt_flag(RESPONSE_B);
+	gpio_clear_pin_interrupt_flag(RESPONSE_C);
+    
+    cpu_irq_disable();
+    INTC_init_interrupts();
+    INTC_register_interrupt(&interrupt_J3, AVR32_GPIO_IRQ_3, AVR32_INTC_INT1);
+    cpu_irq_enable();
+    
+    stdio_usb_init(&CONFIG_USART_IF);
+
+    #if defined(__GNUC__) && defined(__AVR32__)
+        setbuf(stdout, NULL);
+        setbuf(stdin,  NULL);
+    #endif
+}
+
+
+__attribute__((__interrupt__)) static void interrupt_J3(void) {
+
+    if (gpio_get_pin_interrupt_flag(TEST_A)) {
+
+        flag_a = 1;
+        gpio_clear_pin_interrupt_flag(TEST_A);
+    }
+
+    if (gpio_get_pin_interrupt_flag(TEST_B)) {
+
+        flag_b = 1;
+        gpio_clear_pin_interrupt_flag(TEST_B);
+    }
+
+    if (gpio_get_pin_interrupt_flag(TEST_C)) {
+
+        flag_c = 1;
+        gpio_clear_pin_interrupt_flag(TEST_C);
+    }
+
+}
+
+
+int main (void){
+
+    init();
+
+    // Enable interrupt on pins A, B and C
+    gpio_enable_pin_interrupt(TEST_A, GPIO_FALLING_EDGE);
+    gpio_enable_pin_interrupt(TEST_B, GPIO_FALLING_EDGE);
+    gpio_enable_pin_interrupt(TEST_C, GPIO_FALLING_EDGE);
+
+    cpu_irq_enable();
+    
+    while(1) {
+
+		busy_delay_ms(3000);
+        
+        if (flag_a) {
+
+            gpio_clr_gpio_pin(RESPONSE_A);
+            while (gpio_get_pin_value(TEST_A) == 0);
+            gpio_set_gpio_pin(RESPONSE_A);
+            flag_a = 0;
+        }
+
+        if (flag_b) {
+
+            gpio_clr_gpio_pin(RESPONSE_B);
+            while (gpio_get_pin_value(TEST_B) == 0);
+            gpio_set_gpio_pin(RESPONSE_B);
+            flag_b = 0;
+        }
+
+        if (flag_c) {
+
+            gpio_clr_gpio_pin(RESPONSE_C);
+            while (gpio_get_pin_value(TEST_C) == 0);
+            gpio_set_gpio_pin(RESPONSE_C);
+            flag_c = 0;
+        }
+    }
 }

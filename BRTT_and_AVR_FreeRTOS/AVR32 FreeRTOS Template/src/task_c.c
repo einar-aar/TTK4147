@@ -101,7 +101,8 @@ static void task_C(void* args){
 }
 
 
-int main(){
+int main() {
+    
 	init();
         
 	xTaskCreate(task_A, "", 1024, NULL, tskIDLE_PRIORITY + 1, NULL);

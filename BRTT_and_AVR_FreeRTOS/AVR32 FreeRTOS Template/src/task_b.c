@@ -59,7 +59,7 @@ void init(){
 // Tasks
 static void task_A(void* args){
 
-	while(1){
+	while(1) {
 
         if (!gpio_get_pin_value(TEST_A)) {
             
@@ -73,7 +73,7 @@ static void task_A(void* args){
 
 static void task_B(void* args){
 
-	while(1){
+	while(1) {
 
         if (!gpio_get_pin_value(TEST_B)) {
             
@@ -87,7 +87,7 @@ static void task_B(void* args){
 
 static void task_C(void* args){
 
-	while(1){
+	while(1) {
 
         if (!gpio_get_pin_value(TEST_C)) {
             
