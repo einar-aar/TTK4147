@@ -77,9 +77,9 @@ static void *thread_B(void *arg) {
 
     while (1) {
 
-        if (digitalRead(PININ_A) == LOW) digitalWrite(PINOUT_A, LOW);
+        if (digitalRead(PININ_B) == LOW) digitalWrite(PINOUT_B, LOW);
 
-        else digitalWrite(PINOUT_A, HIGH);
+        else digitalWrite(PINOUT_B, HIGH);
 
         sleep_realtime(2e6);
     }
@@ -93,9 +93,9 @@ static void *thread_C(void *arg) {
 
     while (1) {
 
-        if (digitalRead(PININ_A) == LOW) digitalWrite(PINOUT_A, LOW);
+        if (digitalRead(PININ_C) == LOW) digitalWrite(PINOUT_C, LOW);
 
-        else digitalWrite(PINOUT_A, HIGH);
+        else digitalWrite(PINOUT_C, HIGH);
 
         sleep_realtime(2e6);
     }

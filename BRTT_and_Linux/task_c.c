@@ -51,7 +51,7 @@ static void *thread_A(void *arg) {
 
     while (1) {
 
-        if (digitalRead(PININ_A) == LOW);
+        while (digitalRead(PININ_A) == HIGH);
         digitalWrite(PINOUT_A, LOW);
 
         while (digitalRead(PININ_A) == LOW);
