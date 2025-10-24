@@ -1,8 +1,11 @@
 #define _GNU_SOURCE
 #include <pthread.h>
 #include <wiringPi.h>
+<<<<<<< HEAD
 #include <unistd.h>
 #include <errno.h>
+=======
+>>>>>>> c14e50db520ea51dda8a144b86d32520afd53a5e
 #include <sched.h>
 
 
@@ -51,7 +54,11 @@ static void *thread_A(void *arg) {
 
     while (1) {
 
+<<<<<<< HEAD
         while (digitalRead(PININ_A) == HIGH);
+=======
+        if (digitalRead(PININ_A) == LOW);
+>>>>>>> c14e50db520ea51dda8a144b86d32520afd53a5e
         digitalWrite(PINOUT_A, LOW);
 
         while (digitalRead(PININ_A) == LOW);
