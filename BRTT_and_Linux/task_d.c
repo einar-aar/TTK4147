@@ -3,9 +3,18 @@
 #include <wiringPi.h>
 #include <sched.h>
 #include <time.h>
+<<<<<<< HEAD
 #include <unistd.h>
 #include <errno.h>
 #include <sched.h>
+=======
+<<<<<<< HEAD
+#include <unistd.h>
+#include <errno.h>
+#include <sched.h>
+=======
+>>>>>>> c14e50db520ea51dda8a144b86d32520afd53a5e
+>>>>>>> b21fb16c4201cf61d2f3c0f3437fa7267cfdd94b
 
 #define PININ_A   8
 #define PINOUT_A  9
@@ -77,9 +86,21 @@ static void *thread_B(void *arg) {
 
     while (1) {
 
+<<<<<<< HEAD
         if (digitalRead(PININ_A) == LOW) digitalWrite(PINOUT_A, LOW);
 
         else digitalWrite(PINOUT_A, HIGH);
+=======
+<<<<<<< HEAD
+        if (digitalRead(PININ_B) == LOW) digitalWrite(PINOUT_B, LOW);
+
+        else digitalWrite(PINOUT_B, HIGH);
+=======
+        if (digitalRead(PININ_A) == LOW) digitalWrite(PINOUT_A, LOW);
+
+        else digitalWrite(PINOUT_A, HIGH);
+>>>>>>> c14e50db520ea51dda8a144b86d32520afd53a5e
+>>>>>>> b21fb16c4201cf61d2f3c0f3437fa7267cfdd94b
 
         sleep_realtime(2e6);
     }
@@ -93,9 +114,21 @@ static void *thread_C(void *arg) {
 
     while (1) {
 
+<<<<<<< HEAD
         if (digitalRead(PININ_A) == LOW) digitalWrite(PINOUT_A, LOW);
 
         else digitalWrite(PINOUT_A, HIGH);
+=======
+<<<<<<< HEAD
+        if (digitalRead(PININ_C) == LOW) digitalWrite(PINOUT_C, LOW);
+
+        else digitalWrite(PINOUT_C, HIGH);
+=======
+        if (digitalRead(PININ_A) == LOW) digitalWrite(PINOUT_A, LOW);
+
+        else digitalWrite(PINOUT_A, HIGH);
+>>>>>>> c14e50db520ea51dda8a144b86d32520afd53a5e
+>>>>>>> b21fb16c4201cf61d2f3c0f3437fa7267cfdd94b
 
         sleep_realtime(2e6);
     }

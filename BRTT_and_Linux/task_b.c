@@ -1,9 +1,18 @@
 #define _GNU_SOURCE
 #include <pthread.h>
 #include <wiringPi.h>
+<<<<<<< HEAD
 #include <unistd.h>
 #include <errno.h>
 #include <sched.h>
+=======
+<<<<<<< HEAD
+#include <unistd.h>
+#include <errno.h>
+#include <sched.h>
+=======
+>>>>>>> c14e50db520ea51dda8a144b86d32520afd53a5e
+>>>>>>> b21fb16c4201cf61d2f3c0f3437fa7267cfdd94b
 
 
 #define PININ_A   8
